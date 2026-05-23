@@ -6,14 +6,11 @@ addDoc
 }
 
 from
-
 "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 
 document
-.getElementById(
-"btnEntrar"
-)
+.getElementById("btnEntrar")
 .addEventListener(
 "click",
 registrarJugador
@@ -23,27 +20,21 @@ registrarJugador
 async function registrarJugador(){
 
 let nombre=
-
 document
-.getElementById(
-"nombre"
-)
+.getElementById("nombre")
 .value
 .trim();
 
+
 if(nombre===""){
 
-alert(
-"Escribe un nombre"
-);
-
+alert("Escribe un nombre");
 return;
 
 }
 
 
 const esAdmin=
-
 nombre.toLowerCase()==="admin";
 
 
@@ -84,6 +75,7 @@ localStorage.setItem(
 "admin",
 esAdmin
 );
+
 
 window.location.href=
 "sala.html";

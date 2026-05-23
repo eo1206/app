@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html lang="es">
+
+<html>
 
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Sala de espera</title>
+<link rel="stylesheet"
+href="style.css">
 
-<link rel="stylesheet" href="style.css">
+<title>Sala</title>
 
 </head>
 
@@ -15,15 +17,17 @@
 
 <div class="contenedor">
 
-<h1>🎮 Sala de espera</h1>
+<h1>
 
-<p>Esperando jugadores...</p>
+Sala de espera
 
-<h2 id="jugador"></h2>
+</h1>
 
-<h3>Jugadores conectados:</h3>
+<div id="lista">
 
-<div id="lista"></div>
+</div>
+
+<br>
 
 <button id="iniciar">
 
@@ -31,9 +35,21 @@ Iniciar juego
 
 </button>
 
+<button id="limpiar">
+
+Reiniciar clase
+
+</button>
+
 </div>
 
-<script type="module" src="sala.js"></script>
+
+<script
+type="module"
+src="sala.js">
+
+</script>
 
 </body>
+
 </html>

@@ -2,6 +2,7 @@ import { db }
 
 from "./firebase.js";
 
+
 import {
 
 doc,
@@ -45,12 +46,16 @@ let preguntaActual=
 preguntas[0];
 
 
+let respondio=
+false;
+
+
 
 document
 .getElementById(
 "pregunta"
 )
-innerHTML=
+.innerHTML=
 
 preguntaActual.pregunta;
 
@@ -83,11 +88,22 @@ botones.forEach(
 
 (btn,i)=>{
 
+
 btn.addEventListener(
 
 "click",
 
 async()=>{
+
+
+if(
+respondio
+)return;
+
+
+respondio=
+true;
+
 
 
 if(
@@ -128,7 +144,9 @@ document
 "Correcto +10";
 
 }
+
 else{
+
 
 document
 .getElementById(
@@ -140,9 +158,12 @@ document
 
 }
 
+
 }
 
+
 );
+
 
 }
 

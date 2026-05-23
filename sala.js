@@ -5,7 +5,9 @@ import {
 collection,
 onSnapshot,
 doc,
-setDoc
+setDoc,
+deleteDoc,
+getDocs
 
 }
 
@@ -14,17 +16,19 @@ from
 "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 
-
 const lista=
-
 document.getElementById(
 "lista"
 );
 
 const boton=
-
 document.getElementById(
 "iniciar"
+);
+
+const limpiar=
+document.getElementById(
+"limpiar"
 );
 
 
@@ -35,10 +39,12 @@ localStorage.getItem(
 )==="true";
 
 
-
 if(!admin){
 
 boton.style.display=
+"none";
+
+limpiar.style.display=
 "none";
 
 }
@@ -60,13 +66,35 @@ jugadoresRef,
 
 let html="";
 
+
 snapshot.forEach((docu)=>{
+
+let jugador=
+docu.data();
+
 
 html+=`
 
 <div class="jugador">
 
-${docu.data().nombre}
+${jugador.nombre}
+
+${
+admin
+
+?
+
+`<button onclick="eliminarJugador('${docu.id}')">
+
+Eliminar
+
+</button>`
+
+:
+
+""
+
+}
 
 </div>
 
@@ -74,8 +102,109 @@ ${docu.data().nombre}
 
 });
 
+
 lista.innerHTML=
 html;
+
+}
+
+);
+
+
+
+window.eliminarJugador=
+
+async(id)=>{
+
+if(!admin)return;
+
+
+let confirmar=
+
+confirm(
+"Eliminar jugador?"
+);
+
+
+if(!confirmar)return;
+
+
+await deleteDoc(
+
+doc(
+db,
+"jugadores",
+id
+)
+
+);
+
+};
+
+
+
+limpiar.addEventListener(
+
+"click",
+
+async()=>{
+
+
+let confirmar=
+
+confirm(
+"Eliminar todos?"
+);
+
+if(!confirmar)return;
+
+
+const snapshot=
+
+await getDocs(
+jugadoresRef
+);
+
+
+snapshot.forEach(
+
+async(docu)=>{
+
+await deleteDoc(
+
+doc(
+db,
+"jugadores",
+docu.id
+)
+
+);
+
+}
+
+);
+
+
+await setDoc(
+
+doc(
+db,
+"control",
+"estado"
+),
+
+{
+
+iniciado:false
+
+}
+
+);
+
+
+alert(
+"Clase reiniciada"
+);
 
 }
 
@@ -88,6 +217,7 @@ boton.addEventListener(
 "click",
 
 async()=>{
+
 
 await setDoc(
 
@@ -107,6 +237,8 @@ iniciado:true
 
 }
 
+
+
 );
 
 
@@ -121,12 +253,15 @@ db,
 
 (docu)=>{
 
-if(
-docu.exists()
-){
 
 if(
+
+docu.exists()
+
+&&
+
 docu.data().iniciado
+
 ){
 
 window.location.href=
@@ -134,7 +269,6 @@ window.location.href=
 
 }
 
-}
 
 }
 

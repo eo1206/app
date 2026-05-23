@@ -34,20 +34,26 @@ orderBy(
 );
 
 
+
 onSnapshot(
 
 q,
 
 (snapshot)=>{
 
+
 let html="";
+
 
 snapshot.forEach(
 
-(doc)=>{
+(docu)=>{
+
 
 let jugador=
-doc.data();
+
+docu.data();
+
 
 html+=`
 
@@ -67,6 +73,7 @@ pts
 
 }
 
+
 );
 
 
@@ -76,6 +83,7 @@ document
 )
 .innerHTML=
 html;
+
 
 }
 
