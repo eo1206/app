@@ -1,20 +1,12 @@
 import {db}
-
-from
-
-"./firebase.js";
+from "./firebase.js";
 
 import {
-
 collection,
 addDoc
-
 }
-
 from
-
 "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
-
 
 
 let boton=
@@ -22,33 +14,13 @@ document.getElementById(
 "btnEntrar"
 );
 
-
 boton.addEventListener(
 "click",
-registrarJugador
+guardar
 );
 
 
-
-async function registrarJugador(){
-
-let nombre=
-
-document.getElementById(
-"nombre"
-).value;
-
-
-if(nombre===""){
-
-alert(
-"Escribe un nombre"
-);
-
-return;
-
-}
-
+async function guardar(){
 
 try{
 
@@ -61,42 +33,29 @@ db,
 
 {
 
-nombre:nombre,
-puntos:0,
-vidas:3,
-
-fecha:
-new Date()
-
-}
-
-);
-
-
-document.getElementById(
-"mensaje"
-).innerHTML=
-
-"Jugador registrado";
-
-
+nombre:
 document.getElementById(
 "nombre"
-).value="";
+).value,
 
-
-console.log(
-"Guardado"
-);
+puntos:0,
+vidas:3
 
 }
 
+);
+
+alert(
+"Guardado correctamente"
+);
+
+}
 catch(error){
 
 console.log(error);
 
 alert(
-"Error al guardar"
+"Error"
 );
 
 }
