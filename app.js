@@ -9,18 +9,21 @@ from
 "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 
+console.log("Página cargó");
+
 let boton=
-document.getElementById(
-"btnEntrar"
-);
+document.getElementById("btnEntrar");
+
+console.log(boton);
 
 boton.addEventListener(
 "click",
 guardar
 );
 
-
 async function guardar(){
+
+console.log("Entró al botón");
 
 try{
 
@@ -45,19 +48,18 @@ vidas:3
 
 );
 
-alert(
-"Guardado correctamente"
-);
+console.log("Guardado");
+
+alert("Guardado");
 
 }
 catch(error){
 
-console.log(error);
-
-alert(
-"Error"
+console.log(
+"ERROR:"
 );
 
-}
+console.log(error);
 
+}
 }
