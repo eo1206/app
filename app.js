@@ -1,29 +1,50 @@
-import {db}
+import { db }
+
 from "./firebase.js";
 
 import {
+
 collection,
 addDoc
+
 }
+
 from
+
 "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 
-console.log("Página cargó");
+let boton =
+document.getElementById(
+"btnEntrar"
+);
 
-let boton=
-document.getElementById("btnEntrar");
-
-console.log(boton);
 
 boton.addEventListener(
 "click",
-guardar
+guardarJugador
 );
 
-async function guardar(){
 
-console.log("Entró al botón");
+async function guardarJugador(){
+
+let nombre =
+
+document.getElementById(
+"nombre"
+).value;
+
+
+if(nombre===""){
+
+alert(
+"Escribe un nombre"
+);
+
+return;
+
+}
+
 
 try{
 
@@ -36,11 +57,7 @@ db,
 
 {
 
-nombre:
-document.getElementById(
-"nombre"
-).value,
-
+nombre:nombre,
 puntos:0,
 vidas:3
 
@@ -48,18 +65,19 @@ vidas:3
 
 );
 
-console.log("Guardado");
-
-alert("Guardado");
+alert(
+"Jugador guardado"
+);
 
 }
 catch(error){
 
-console.log(
-"ERROR:"
-);
-
 console.log(error);
 
+alert(
+"Error"
+);
+
 }
+
 }
