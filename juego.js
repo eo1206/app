@@ -1,7 +1,8 @@
 import { db }
-
 from "./firebase.js";
 
+import { preguntas }
+from "./preguntas.js";
 
 import {
 
@@ -16,78 +17,60 @@ from
 "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 
+const preguntaHTML=
+document.getElementById(
+"pregunta"
+);
 
-const preguntas=[
+const mensaje=
+document.getElementById(
+"mensaje"
+);
 
-{
-
-pregunta:
-
-"Pedro recibe buen salario pero siente falta de reconocimiento ¿Qué teoría aplica?",
-
-opciones:[
-
-"Maslow",
-"Herzberg",
-"McClelland",
-"Equidad"
-
-],
-
-correcta:1
-
-}
-
-];
+const botones=
+document.querySelectorAll(
+".opcion");
 
 
+let indiceActual=0;
+let respondio=false;
+
+
+
+cargarPregunta();
+
+
+
+function cargarPregunta(){
+
+respondio=false;
 
 let preguntaActual=
-preguntas[0];
+preguntas[indiceActual];
 
 
-let respondio=
-false;
-
-
-
-document
-.getElementById(
-"pregunta"
-)
-.innerHTML=
-
+preguntaHTML.innerHTML=
 preguntaActual.pregunta;
 
 
-
-const botones=
-
-document.querySelectorAll(
-".opcion"
-);
-
-
-
-preguntaActual.opciones
-.forEach(
+preguntaActual.opciones.forEach(
 
 (opcion,i)=>{
 
-botones[i]
-.innerHTML=
+botones[i].innerHTML=
 opcion;
 
 }
 
 );
 
+}
+
 
 
 botones.forEach(
 
 (btn,i)=>{
-
 
 btn.addEventListener(
 
@@ -96,14 +79,13 @@ btn.addEventListener(
 async()=>{
 
 
-if(
-respondio
-)return;
+if(respondio)return;
+
+respondio=true;
 
 
-respondio=
-true;
-
+let preguntaActual=
+preguntas[indiceActual];
 
 
 if(
@@ -135,32 +117,46 @@ increment(10)
 );
 
 
-document
-.getElementById(
-"mensaje"
-)
-.innerHTML=
-
+mensaje.innerHTML=
 "Correcto +10";
 
 }
-
 else{
 
-
-document
-.getElementById(
-"mensaje"
-)
-.innerHTML=
-
+mensaje.innerHTML=
 "Incorrecto";
 
 }
 
 
+setTimeout(()=>{
+
+
+indiceActual++;
+
+
+if(
+indiceActual<
+preguntas.length
+){
+
+cargarPregunta();
+
+mensaje.innerHTML="";
+
+}
+else{
+
+window.location.href=
+"ranking.html";
+
 }
 
+
+},1500);
+
+
+}
 
 );
 
