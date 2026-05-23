@@ -7,7 +7,8 @@ onSnapshot,
 doc,
 setDoc,
 deleteDoc,
-getDocs
+getDocs,
+getDoc
 
 }
 
@@ -17,23 +18,16 @@ from
 
 
 const lista=
-document.getElementById(
-"lista"
-);
+document.getElementById("lista");
 
 const boton=
-document.getElementById(
-"iniciar"
-);
+document.getElementById("iniciar");
 
 const limpiar=
-document.getElementById(
-"limpiar"
-);
+document.getElementById("limpiar");
 
 
 const admin=
-
 localStorage.getItem(
 "admin"
 )==="true";
@@ -41,21 +35,76 @@ localStorage.getItem(
 
 if(!admin){
 
-boton.style.display=
-"none";
+boton.style.display="none";
 
-limpiar.style.display=
-"none";
+limpiar.style.display="none";
 
 }
 
 
-const jugadoresRef=
 
+const jugadoresRef=
 collection(
 db,
 "jugadores"
 );
+
+
+
+inicializarSala();
+
+
+
+async function inicializarSala(){
+
+
+if(admin){
+
+const estadoRef=
+
+doc(
+db,
+"control",
+"estado"
+);
+
+
+const estado=
+
+await getDoc(
+estadoRef
+);
+
+
+if(
+
+!estado.exists()
+
+||
+
+estado.data().iniciado===true
+
+){
+
+await setDoc(
+
+estadoRef,
+
+{
+
+iniciado:false
+
+}
+
+);
+
+}
+
+}
+
+
+}
+
 
 
 onSnapshot(
@@ -64,10 +113,12 @@ jugadoresRef,
 
 (snapshot)=>{
 
+
 let html="";
 
 
 snapshot.forEach((docu)=>{
+
 
 let jugador=
 docu.data();
@@ -106,6 +157,7 @@ Eliminar
 lista.innerHTML=
 html;
 
+
 }
 
 );
@@ -115,6 +167,7 @@ html;
 window.eliminarJugador=
 
 async(id)=>{
+
 
 if(!admin)return;
 
@@ -139,6 +192,7 @@ id
 
 );
 
+
 };
 
 
@@ -156,7 +210,9 @@ confirm(
 "Eliminar todos?"
 );
 
+
 if(!confirmar)return;
+
 
 
 const snapshot=
@@ -166,9 +222,8 @@ jugadoresRef
 );
 
 
-snapshot.forEach(
 
-async(docu)=>{
+for(const docu of snapshot.docs){
 
 await deleteDoc(
 
@@ -181,8 +236,6 @@ docu.id
 );
 
 }
-
-);
 
 
 await setDoc(
@@ -205,6 +258,7 @@ iniciado:false
 alert(
 "Clase reiniciada"
 );
+
 
 }
 
@@ -235,9 +289,8 @@ iniciado:true
 
 );
 
+
 }
-
-
 
 );
 
@@ -260,7 +313,7 @@ docu.exists()
 
 &&
 
-docu.data().iniciado
+docu.data().iniciado===true
 
 ){
 
