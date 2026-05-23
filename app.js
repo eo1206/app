@@ -1,52 +1,40 @@
 import { db }
-
 from "./firebase.js";
 
 import {
-
 collection,
 addDoc
-
 }
-
 from
-
 "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
-
-let boton =
+let boton=
 document.getElementById(
 "btnEntrar"
 );
 
-
 boton.addEventListener(
 "click",
-guardarJugador
+registrarJugador
 );
 
+async function registrarJugador(){
 
-async function guardarJugador(){
-
-let nombre =
-
+let nombre=
 document.getElementById(
 "nombre"
 ).value;
 
-
 if(nombre===""){
 
-alert(
-"Escribe un nombre"
-);
-
+alert("Escribe un nombre");
 return;
 
 }
 
-
 try{
+
+const docRef=
 
 await addDoc(
 
@@ -65,18 +53,23 @@ vidas:3
 
 );
 
-alert(
-"Jugador guardado"
+localStorage.setItem(
+"jugadorID",
+docRef.id
 );
+
+localStorage.setItem(
+"nombre",
+nombre
+);
+
+window.location.href=
+"sala.html";
 
 }
 catch(error){
 
 console.log(error);
-
-alert(
-"Error"
-);
 
 }
 
