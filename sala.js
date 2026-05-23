@@ -28,6 +28,7 @@ document.getElementById("limpiar");
 
 
 const admin=
+
 localStorage.getItem(
 "admin"
 )==="true";
@@ -42,70 +43,55 @@ limpiar.style.display="none";
 }
 
 
-
 const jugadoresRef=
 collection(
-db,
-"jugadores"
-);
+db,"jugadores");
 
 
 
-inicializarSala();
+iniciar();
 
 
 
-async function inicializarSala(){
+async function iniciar(){
 
 
 if(admin){
 
-const estadoRef=
+await setDoc(
 
 doc(
 db,
 "control",
 "estado"
-);
-
-
-const estado=
-
-await getDoc(
-estadoRef
-);
-
-
-if(
-
-!estado.exists()
-
-||
-
-estado.data().iniciado===true
-
-){
-
-await setDoc(
-
-estadoRef,
+),
 
 {
 
 iniciado:false
 
+},
+
+{
+
+merge:true
+
 }
 
 );
 
 }
 
+
+cargarJugadores();
+
+escucharJuego();
+
 }
 
 
-}
 
-
+function cargarJugadores(){
 
 onSnapshot(
 
@@ -113,12 +99,10 @@ jugadoresRef,
 
 (snapshot)=>{
 
-
 let html="";
 
 
 snapshot.forEach((docu)=>{
-
 
 let jugador=
 docu.data();
@@ -157,10 +141,11 @@ Eliminar
 lista.innerHTML=
 html;
 
-
 }
 
 );
+
+}
 
 
 
@@ -172,15 +157,13 @@ async(id)=>{
 if(!admin)return;
 
 
-let confirmar=
+if(
 
 confirm(
-"Eliminar jugador?"
-);
+"¿Eliminar jugador?"
+)
 
-
-if(!confirmar)return;
-
+){
 
 await deleteDoc(
 
@@ -192,6 +175,7 @@ id
 
 );
 
+}
 
 };
 
@@ -204,15 +188,13 @@ limpiar.addEventListener(
 async()=>{
 
 
-let confirmar=
+if(
 
-confirm(
-"Eliminar todos?"
-);
+!confirm(
+"¿Reiniciar clase?"
+)
 
-
-if(!confirmar)return;
-
+)return;
 
 
 const snapshot=
@@ -220,7 +202,6 @@ const snapshot=
 await getDocs(
 jugadoresRef
 );
-
 
 
 for(const docu of snapshot.docs){
@@ -256,9 +237,7 @@ iniciado:false
 
 
 alert(
-"Clase reiniciada"
-);
-
+"Clase reiniciada");
 
 }
 
@@ -289,11 +268,13 @@ iniciado:true
 
 );
 
-
 }
 
 );
 
+
+
+function escucharJuego(){
 
 
 onSnapshot(
@@ -308,13 +289,16 @@ db,
 
 
 if(
+!docu.exists()
+)return;
 
-docu.exists()
 
-&&
+const estado=
+docu.data();
 
-docu.data().iniciado===true
 
+if(
+estado.iniciado===true
 ){
 
 window.location.href=
@@ -326,3 +310,6 @@ window.location.href=
 }
 
 );
+
+
+}
