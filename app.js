@@ -1,36 +1,51 @@
-import { db }
-from "./firebase.js";
+import { db } from "./firebase.js";
 
 import {
 collection,
 addDoc
 }
+
 from
+
 "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
-let boton=
-document.getElementById(
-"btnEntrar"
-);
 
-boton.addEventListener(
+document
+.getElementById(
+"btnEntrar"
+)
+.addEventListener(
 "click",
 registrarJugador
 );
 
+
 async function registrarJugador(){
 
 let nombre=
-document.getElementById(
+
+document
+.getElementById(
 "nombre"
-).value;
+)
+.value
+.trim();
 
 if(nombre===""){
 
-alert("Escribe un nombre");
+alert(
+"Escribe un nombre"
+);
+
 return;
 
 }
+
+
+const esAdmin=
+
+nombre.toLowerCase()==="admin";
+
 
 try{
 
@@ -47,11 +62,13 @@ db,
 
 nombre:nombre,
 puntos:0,
-vidas:3
+vidas:3,
+admin:esAdmin
 
 }
 
 );
+
 
 localStorage.setItem(
 "jugadorID",
@@ -63,10 +80,16 @@ localStorage.setItem(
 nombre
 );
 
+localStorage.setItem(
+"admin",
+esAdmin
+);
+
 window.location.href=
 "sala.html";
 
 }
+
 catch(error){
 
 console.log(error);

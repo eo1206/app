@@ -4,15 +4,9 @@
 
 <head>
 
-<title>
+<link rel="stylesheet" href="style.css">
 
-MotivaLab
-
-</title>
-
-<link
-rel="stylesheet"
-href="style.css">
+<title>Juego</title>
 
 </head>
 
@@ -20,44 +14,51 @@ href="style.css">
 
 <div class="contenedor">
 
-<h1>
+<h1 id="pregunta">
 
-Pregunta 1
+Pregunta
 
 </h1>
 
-<p>
 
-Pedro recibe buen salario pero siente falta de reconocimiento.
+<div id="opciones">
 
-</p>
+<button class="opcion">
 
-
-<button>
-
-Maslow
+A
 
 </button>
 
-<button>
+<button class="opcion">
 
-Herzberg
-
-</button>
-
-<button>
-
-McClelland
+B
 
 </button>
 
-<button>
+<button class="opcion">
 
-Reforzamiento
+C
+
+</button>
+
+<button class="opcion">
+
+D
 
 </button>
 
 </div>
+
+<div id="mensaje"></div>
+
+</div>
+
+
+<script
+type="module"
+src="juego.js">
+
+</script>
 
 </body>
 

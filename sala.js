@@ -1,8 +1,12 @@
 import { db } from "./firebase.js";
 
 import {
+
 collection,
-onSnapshot
+onSnapshot,
+doc,
+setDoc
+
 }
 
 from
@@ -11,34 +15,42 @@ from
 
 
 
-// Mostrar nombre del jugador actual
-
-const nombreJugador =
-
-localStorage.getItem(
-"nombre"
-);
+const lista=
 
 document.getElementById(
-"jugador"
-).textContent=
+"lista"
+);
 
-"Jugador: " + nombreJugador;
+const boton=
+
+document.getElementById(
+"iniciar"
+);
+
+
+const admin=
+
+localStorage.getItem(
+"admin"
+)==="true";
 
 
 
-// Referencia a colección
+if(!admin){
 
-const jugadoresRef =
+boton.style.display=
+"none";
+
+}
+
+
+const jugadoresRef=
 
 collection(
 db,
 "jugadores"
 );
 
-
-
-// Escuchar cambios en tiempo real
 
 onSnapshot(
 
@@ -48,16 +60,13 @@ jugadoresRef,
 
 let html="";
 
-snapshot.forEach((doc)=>{
+snapshot.forEach((docu)=>{
 
-const jugador=
-doc.data();
-
-html += `
+html+=`
 
 <div class="jugador">
 
-${jugador.nombre}
+${docu.data().nombre}
 
 </div>
 
@@ -65,9 +74,7 @@ ${jugador.nombre}
 
 });
 
-document.getElementById(
-"lista"
-).innerHTML=
+lista.innerHTML=
 html;
 
 }
@@ -76,18 +83,59 @@ html;
 
 
 
-// Botón iniciar
+boton.addEventListener(
 
-document
-.getElementById(
-"iniciar"
-)
-.addEventListener(
 "click",
-()=>{
+
+async()=>{
+
+await setDoc(
+
+doc(
+db,
+"control",
+"estado"
+),
+
+{
+
+iniciado:true
+
+}
+
+);
+
+}
+
+);
+
+
+
+onSnapshot(
+
+doc(
+db,
+"control",
+"estado"
+),
+
+(docu)=>{
+
+if(
+docu.exists()
+){
+
+if(
+docu.data().iniciado
+){
 
 window.location.href=
 "juego.html";
 
 }
+
+}
+
+}
+
 );
