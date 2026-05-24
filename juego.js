@@ -1,5 +1,4 @@
-import { db }
-from "./firebase.js";
+import { db } from "./firebase.js";
 
 import { preguntas }
 from "./preguntas.js";
@@ -7,8 +6,12 @@ from "./preguntas.js";
 import {
 
 doc,
+getDocs,
+collection,
+setDoc,
 updateDoc,
-increment
+increment,
+onSnapshot
 
 }
 
@@ -29,27 +32,201 @@ document.getElementById(
 
 const botones=
 document.querySelectorAll(
-".opcion");
+".opcion"
+);
 
-
-let indiceActual=0;
-let respondio=false;
-
-
-
-cargarPregunta();
+const tiempoHTML=
+document.getElementById(
+"tiempo"
+);
 
 
 
-function cargarPregunta(){
+const jugadorID=
+localStorage.getItem(
+"jugadorID"
+);
 
-respondio=false;
 
-let preguntaActual=
-preguntas[indiceActual];
+let preguntaActual;
+
+
+inicializarJuego();
+
+
+
+async function inicializarJuego(){
+
+
+const jugadores=
+
+await getDocs(
+
+collection(
+db,
+"jugadores"
+)
+
+);
+
+
+const lista=[];
+
+jugadores.forEach(
+docu=>{
+
+lista.push({
+
+id:docu.id,
+...docu.data()
+
+});
+
+});
+
+
+if(lista.length>=4){
+
+await asignarEquipos(
+lista
+);
+
+}
+
+
+escucharEstado();
+
+
+}
+
+
+
+async function asignarEquipos(lista){
+
+
+await updateDoc(
+
+doc(
+db,
+"jugadores",
+lista[0].id
+),
+
+{
+
+equipo:"A"
+
+}
+
+);
+
+
+await updateDoc(
+
+doc(
+db,
+"jugadores",
+lista[1].id
+),
+
+{
+
+equipo:"A"
+
+}
+
+);
+
+
+await updateDoc(
+
+doc(
+db,
+"jugadores",
+lista[2].id
+),
+
+{
+
+equipo:"B"
+
+}
+
+);
+
+
+await updateDoc(
+
+doc(
+db,
+"jugadores",
+lista[3].id
+),
+
+{
+
+equipo:"B"
+
+}
+
+);
+
+
+await setDoc(
+
+doc(
+db,
+"partida",
+"estado"
+),
+
+{
+
+turno:"A",
+preguntaActual:0,
+tiempo:20
+
+}
+
+);
+
+
+}
+
+
+
+function escucharEstado(){
+
+
+onSnapshot(
+
+doc(
+db,
+"partida",
+"estado"
+),
+
+async(docu)=>{
+
+
+let juego=
+docu.data();
+
+
+tiempoHTML.innerHTML=
+
+juego.tiempo;
+
+
+preguntaActual=
+
+preguntas[
+juego.preguntaActual
+];
 
 
 preguntaHTML.innerHTML=
+
 preguntaActual.pregunta;
 
 
@@ -64,6 +241,12 @@ opcion;
 
 );
 
+
+}
+
+);
+
+
 }
 
 
@@ -72,6 +255,7 @@ botones.forEach(
 
 (btn,i)=>{
 
+
 btn.addEventListener(
 
 "click",
@@ -79,32 +263,73 @@ btn.addEventListener(
 async()=>{
 
 
-if(respondio)return;
+const estadoDoc=
 
-respondio=true;
+doc(
+db,
+"partida",
+"estado"
+);
 
 
-let preguntaActual=
-preguntas[indiceActual];
+let turnoActual=
+"A";
+
+
+let jugadorDoc=
+
+await getDocs(
+
+collection(
+db,
+"jugadores"
+)
+
+);
+
+
+let miEquipo;
+
+
+jugadorDoc.forEach(
+j=>{
+
+if(
+j.id===jugadorID
+){
+
+miEquipo=
+j.data().equipo;
+
+}
+
+});
+
+
+if(
+miEquipo!==turnoActual
+){
+
+mensaje.innerHTML=
+
+"No es tu turno";
+
+return;
+
+}
+
 
 
 if(
 i===preguntaActual.correcta
 ){
 
-let jugadorID=
-
-localStorage.getItem(
-"jugadorID"
-);
-
-
 await updateDoc(
 
 doc(
 db,
-"jugadores",
-jugadorID
+"equipos",
+miEquipo
 ),
 
 {
@@ -118,43 +343,26 @@ increment(10)
 
 
 mensaje.innerHTML=
-"Correcto +10";
-
-}
-else{
-
-mensaje.innerHTML=
-"Incorrecto";
+"+10";
 
 }
 
 
-setTimeout(()=>{
+await updateDoc(
 
+estadoDoc,
 
-indiceActual++;
+{
 
+turno:
+miEquipo==="A"
+?
+"B"
+:
+"A",
 
-if(
-indiceActual<
-preguntas.length
-){
-
-cargarPregunta();
-
-mensaje.innerHTML="";
-
-}
-else{
-
-window.location.href=
-"ranking.html";
-
-}
-
-
-},1500);
-
+preguntaActual:
+increment(1)
 
 }
 
@@ -164,3 +372,6 @@ window.location.href=
 }
 
 );
+
+
+});
