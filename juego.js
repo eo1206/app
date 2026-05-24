@@ -1,4 +1,5 @@
-import { db } from "./firebase.js";
+import { db }
+from "./firebase.js";
 
 import { preguntas }
 from "./preguntas.js";
@@ -6,12 +7,12 @@ from "./preguntas.js";
 import {
 
 doc,
+getDoc,
 getDocs,
 collection,
-setDoc,
+onSnapshot,
 updateDoc,
-increment,
-onSnapshot
+increment
 
 }
 
@@ -20,14 +21,31 @@ from
 "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 
+const jugadorID=
+
+localStorage.getItem(
+"jugadorID"
+);
+
+
+const turnoHTML=
+document.getElementById(
+"turno"
+);
+
+const equipoHTML=
+document.getElementById(
+"equipo"
+);
+
+const companeroHTML=
+document.getElementById(
+"companero"
+);
+
 const preguntaHTML=
 document.getElementById(
 "pregunta"
-);
-
-const mensaje=
-document.getElementById(
-"mensaje"
 );
 
 const botones=
@@ -35,167 +53,81 @@ document.querySelectorAll(
 ".opcion"
 );
 
-const tiempoHTML=
-document.getElementById(
-"tiempo"
-);
+
+let jugadores=[];
+
+
+cargar();
 
 
 
-const jugadorID=
-localStorage.getItem(
-"jugadorID"
-);
+async function cargar(){
 
 
-let preguntaActual;
-
-
-inicializarJuego();
-
-
-
-async function inicializarJuego(){
-
-
-const jugadores=
+const snapshot=
 
 await getDocs(
 
 collection(
 db,
 "jugadores"
+
 )
 
 );
 
 
-const lista=[];
+snapshot.forEach(
+d=>{
 
-jugadores.forEach(
-docu=>{
+jugadores.push({
 
-lista.push({
-
-id:docu.id,
-...docu.data()
+id:d.id,
+...d.data()
 
 });
 
 });
 
 
-if(lista.length>=4){
+const yo=
 
-await asignarEquipos(
-lista
+jugadores.find(
+j=>j.id===jugadorID
 );
 
-}
+
+equipoHTML.innerHTML=
+
+`Equipo ${yo.equipo}`;
 
 
-escucharEstado();
+const companero=
 
+jugadores.find(
 
-}
+j=>
 
-
-
-async function asignarEquipos(lista){
-
-
-await updateDoc(
-
-doc(
-db,
-"jugadores",
-lista[0].id
-),
-
-{
-
-equipo:"A"
-
-}
+j.equipo===yo.equipo
+&&
+j.id!==yo.id
 
 );
 
 
-await updateDoc(
+companeroHTML.innerHTML=
 
-doc(
-db,
-"jugadores",
-lista[1].id
-),
-
-{
-
-equipo:"A"
-
-}
-
-);
+`Tu compañero:
+${companero.nombre}`;
 
 
-await updateDoc(
-
-doc(
-db,
-"jugadores",
-lista[2].id
-),
-
-{
-
-equipo:"B"
-
-}
-
-);
-
-
-await updateDoc(
-
-doc(
-db,
-"jugadores",
-lista[3].id
-),
-
-{
-
-equipo:"B"
-
-}
-
-);
-
-
-await setDoc(
-
-doc(
-db,
-"partida",
-"estado"
-),
-
-{
-
-turno:"A",
-preguntaActual:0,
-tiempo:20
-
-}
-
-);
-
+escucharPartida();
 
 }
 
 
 
-function escucharEstado(){
+function escucharPartida(){
 
 
 onSnapshot(
@@ -209,16 +141,28 @@ db,
 async(docu)=>{
 
 
-let juego=
+const juego=
 docu.data();
 
 
-tiempoHTML.innerHTML=
+const turnoJugador=
 
-juego.tiempo;
+jugadores.find(
+
+j=>
+
+j.id===juego.turnoJugador
+
+);
 
 
-preguntaActual=
+turnoHTML.innerHTML=
+
+`Turno:
+${turnoJugador.nombre}`;
+
+
+let pregunta=
 
 preguntas[
 juego.preguntaActual
@@ -226,152 +170,36 @@ juego.preguntaActual
 
 
 preguntaHTML.innerHTML=
+pregunta.pregunta;
 
-preguntaActual.pregunta;
 
+pregunta.opciones.forEach(
 
-preguntaActual.opciones.forEach(
-
-(opcion,i)=>{
+(op,i)=>{
 
 botones[i].innerHTML=
-opcion;
+op;
 
-}
-
-);
-
-
-}
-
-);
-
-
-}
-
+});
 
 
 botones.forEach(
 
-(btn,i)=>{
+btn=>{
 
+btn.disabled=
 
-btn.addEventListener(
-
-"click",
-
-async()=>{
-
-
-const estadoDoc=
-
-doc(
-db,
-"partida",
-"estado"
-);
-
-
-let turnoActual=
-"A";
-
-
-let jugadorDoc=
-
-await getDocs(
-
-collection(
-db,
-"jugadores"
-)
-
-);
-
-
-let miEquipo;
-
-
-jugadorDoc.forEach(
-j=>{
-
-if(
-j.id===jugadorID
-){
-
-miEquipo=
-j.data().equipo;
-
-}
+turnoJugador.id
+!==jugadorID;
 
 });
 
 
-if(
-miEquipo!==turnoActual
-){
-
-mensaje.innerHTML=
-
-"No es tu turno";
-
-return;
-
-}
-
-
-
-if(
-i===preguntaActual.correcta
-){
-
-await updateDoc(
-
-doc(
-db,
-"equipos",
-miEquipo
-),
-
-{
-
-puntos:
-increment(10)
 
 }
 
 );
 
 
-mensaje.innerHTML=
-"+10";
 
 }
-
-
-await updateDoc(
-
-estadoDoc,
-
-{
-
-turno:
-miEquipo==="A"
-?
-"B"
-:
-"A",
-
-preguntaActual:
-increment(1)
-
-}
-
-);
-
-
-}
-
-);
-
-
-});

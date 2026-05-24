@@ -5,10 +5,9 @@ import {
 collection,
 onSnapshot,
 doc,
-setDoc,
-deleteDoc,
+updateDoc,
 getDocs,
-getDoc
+setDoc
 
 }
 
@@ -18,13 +17,19 @@ from
 
 
 const lista=
-document.getElementById("lista");
+document.getElementById(
+"lista"
+);
 
-const boton=
-document.getElementById("iniciar");
+const equipos=
+document.getElementById(
+"equipos"
+);
 
-const limpiar=
-document.getElementById("limpiar");
+const iniciar=
+document.getElementById(
+"iniciar"
+);
 
 
 const admin=
@@ -36,62 +41,21 @@ localStorage.getItem(
 
 if(!admin){
 
-boton.style.display="none";
-
-limpiar.style.display="none";
+iniciar.style.display=
+"none";
 
 }
 
 
 const jugadoresRef=
 collection(
-db,"jugadores");
-
-
-
-iniciar();
-
-
-
-async function iniciar(){
-
-
-if(admin){
-
-await setDoc(
-
-doc(
 db,
-"control",
-"estado"
-),
-
-{
-
-iniciado:false
-
-},
-
-{
-
-merge:true
-
-}
-
+"jugadores"
 );
 
-}
 
+let jugadores=[];
 
-cargarJugadores();
-
-escucharJuego();
-
-}
-
-
-
-function cargarJugadores(){
 
 onSnapshot(
 
@@ -99,37 +63,29 @@ jugadoresRef,
 
 (snapshot)=>{
 
+jugadores=[];
+
 let html="";
 
 
 snapshot.forEach((docu)=>{
 
-let jugador=
-docu.data();
+let jugador={
 
+id:docu.id,
+...docu.data()
+
+};
+
+jugadores.push(
+jugador
+);
 
 html+=`
 
-<div class="jugador">
+<div>
 
 ${jugador.nombre}
-
-${
-admin
-
-?
-
-`<button onclick="eliminarJugador('${docu.id}')">
-
-Eliminar
-
-</button>`
-
-:
-
-""
-
-}
 
 </div>
 
@@ -141,126 +97,136 @@ Eliminar
 lista.innerHTML=
 html;
 
-}
-
-);
-
-}
-
-
-
-window.eliminarJugador=
-
-async(id)=>{
-
-
-if(!admin)return;
-
 
 if(
-
-confirm(
-"¿Eliminar jugador?"
-)
-
+jugadores.length===4
 ){
 
-await deleteDoc(
+crearEquipos();
+
+}
+
+
+}
+
+);
+
+
+
+async function crearEquipos(){
+
+
+await updateDoc(
 
 doc(
 db,
 "jugadores",
-id
-)
+jugadores[0].id
+),
 
-);
+{
+
+equipo:"A"
 
 }
 
-};
+);
+
+
+await updateDoc(
+
+doc(
+db,
+"jugadores",
+jugadores[1].id
+),
+
+{
+
+equipo:"A"
+
+}
+
+);
+
+
+await updateDoc(
+
+doc(
+db,
+"jugadores",
+jugadores[2].id
+),
+
+{
+
+equipo:"B"
+
+}
+
+);
+
+
+await updateDoc(
+
+doc(
+db,
+"jugadores",
+jugadores[3].id
+),
+
+{
+
+equipo:"B"
+
+}
+
+);
+
+
+equipos.innerHTML=
+
+`
+Equipo A:
+${jugadores[0].nombre}
++
+${jugadores[1].nombre}
+
+<br><br>
+
+Equipo B:
+${jugadores[2].nombre}
++
+${jugadores[3].nombre}
+`;
+
+}
 
 
 
-limpiar.addEventListener(
+iniciar.addEventListener(
 
 "click",
 
 async()=>{
 
 
-if(
-
-!confirm(
-"¿Reiniciar clase?"
-)
-
-)return;
-
-
-const snapshot=
-
-await getDocs(
-jugadoresRef
-);
-
-
-for(const docu of snapshot.docs){
-
-await deleteDoc(
-
-doc(
-db,
-"jugadores",
-docu.id
-)
-
-);
-
-}
-
-
 await setDoc(
 
 doc(
 db,
-"control",
+"partida",
 "estado"
 ),
 
 {
 
-iniciado:false
+turnoJugador:
+jugadores[0].id,
 
-}
+indiceTurno:0,
 
-);
-
-
-alert(
-"Clase reiniciada");
-
-}
-
-);
-
-
-
-boton.addEventListener(
-
-"click",
-
-async()=>{
-
-
-await setDoc(
-
-doc(
-db,
-"control",
-"estado"
-),
-
-{
+preguntaActual:0,
 
 iniciado:true
 
@@ -268,48 +234,11 @@ iniciado:true
 
 );
 
-}
-
-);
-
-
-
-function escucharJuego(){
-
-
-onSnapshot(
-
-doc(
-db,
-"control",
-"estado"
-),
-
-(docu)=>{
-
-
-if(
-!docu.exists()
-)return;
-
-
-const estado=
-docu.data();
-
-
-if(
-estado.iniciado===true
-){
 
 window.location.href=
 "juego.html";
 
-}
-
 
 }
 
 );
-
-
-}
