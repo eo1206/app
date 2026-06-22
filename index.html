@@ -99,8 +99,8 @@
     <div>
       <h2>Ingredientes principales</h2>
       <p>
-        EggClean combina materiales simples con una presentación moderna,
-        pensada para una limpieza práctica y responsable.
+        EggClean combina cáscara de huevo y carbón activado para ofrecer una
+        alternativa práctica de limpieza con enfoque ecológico.
       </p>
     </div>
 
@@ -154,36 +154,56 @@
     </table>
   </section>
 
-  <section class="testimonials">
-    <h2>Opiniones</h2>
+  <section class="buy-section" id="comprar">
+    <h2>Comprar EggClean</h2>
+    <p class="section-text">Elige la presentación que prefieras.</p>
 
-    <div class="cards">
-      <div class="card">
-        <p>"Me ayudó a limpiar sartenes que ya se veían muy manchados."</p>
-        <h4>María G.</h4>
+    <div class="shop">
+      <div class="product-option selected" data-name="Individual" data-price="50">
+        <h3>Individual</h3>
+        <p>1 pieza</p>
+        <strong>$50</strong>
       </div>
 
-      <div class="card">
-        <p>"Es práctico y me gusta que tenga materiales reutilizados."</p>
-        <h4>José R.</h4>
+      <div class="product-option" data-name="Pack Familiar" data-price="130">
+        <h3>Pack Familiar</h3>
+        <p>3 piezas</p>
+        <strong>$130</strong>
       </div>
 
-      <div class="card">
-        <p>"La limpieza se siente más sencilla y menos pesada."</p>
-        <h4>Ana P.</h4>
+      <div class="product-option" data-name="Pack Ahorro" data-price="240">
+        <h3>Pack Ahorro</h3>
+        <p>6 piezas</p>
+        <strong>$240</strong>
       </div>
     </div>
-  </section>
 
-  <section class="cta" id="comprar">
-    <h2>Dale una segunda vida a tus sartenes</h2>
-    <p>Prueba EggClean y haz más fácil la limpieza de tu cocina.</p>
-    <a href="#" class="btn cta-btn">Comprar EggClean</a>
+    <div class="cart-box">
+      <h3>Resumen de compra</h3>
+
+      <p>Producto: <span id="selectedProduct">Individual</span></p>
+      <p>Precio unitario: $<span id="unitPrice">50</span></p>
+
+      <div class="quantity">
+        <button id="minusBtn">-</button>
+        <span id="quantity">1</span>
+        <button id="plusBtn">+</button>
+      </div>
+
+      <h3>Total: $<span id="total">50</span></h3>
+
+      <input type="text" id="clientName" placeholder="Tu nombre">
+      <input type="tel" id="clientPhone" placeholder="Tu teléfono">
+
+      <button id="orderBtn" class="btn primary">Realizar pedido</button>
+      <p id="message"></p>
+    </div>
   </section>
 
   <footer>
     <p>EggClean © 2026 | Producto ecológico de limpieza</p>
   </footer>
 
+  <script type="module" src="app.js"></script>
 </body>
 </html>
