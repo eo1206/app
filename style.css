@@ -143,13 +143,6 @@ nav a {
   font-weight: 900;
 }
 
-.hero-product{
-    width:220px;
-    height:220px;
-    object-fit:contain;
-    display:block;
-    margin:30px auto;
-}
 
 .product-circle {
   width: 170px;
