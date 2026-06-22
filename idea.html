@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EcoProducto | Tienda Online</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header class="header">
+    <h1>EcoProducto</h1>
+    <nav>
+      <a href="#producto">Producto</a>
+      <a href="#impacto">Impacto</a>
+      <a href="#comprar">Comprar</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div>
+      <h2>Un producto útil, ecológico y responsable</h2>
+      <p>Diseñado para reducir residuos y cuidar el medio ambiente.</p>
+      <a href="#comprar" class="btn">Comprar ahora</a>
+    </div>
+
+    <div class="hero-img">
+      <img src="https://via.placeholder.com/400x300" alt="Producto ecológico">
+    </div>
+  </section>
+
+  <section id="producto" class="section">
+    <h2>Conoce el producto</h2>
+    <p>
+      Nuestro producto está pensado para ser práctico, duradero y amigable con la naturaleza.
+      Es ideal para uso diario y ayuda a reducir el consumo de materiales contaminantes.
+    </p>
+
+    <div class="cards">
+      <div class="card">
+        <h3>Material resistente</h3>
+        <p>Fabricado con materiales de buena calidad.</p>
+      </div>
+
+      <div class="card">
+        <h3>Fácil de usar</h3>
+        <p>Diseño simple, práctico y funcional.</p>
+      </div>
+
+      <div class="card">
+        <h3>Producto ecológico</h3>
+        <p>Ayuda a reducir residuos y consumo innecesario.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="impacto" class="section green">
+    <h2>Impacto en la naturaleza</h2>
+    <p>
+      Este producto busca disminuir el uso de productos desechables y fomentar una forma
+      de consumo más responsable.
+    </p>
+
+    <div class="process">
+      <div>
+        <span>1</span>
+        <h3>Obtención del material</h3>
+        <p>Se seleccionan materiales resistentes y reutilizables.</p>
+      </div>
+
+      <div>
+        <span>2</span>
+        <h3>Fabricación</h3>
+        <p>Se produce buscando reducir desperdicios.</p>
+      </div>
+
+      <div>
+        <span>3</span>
+        <h3>Empaque</h3>
+        <p>Se usa un empaque simple y funcional.</p>
+      </div>
+
+      <div>
+        <span>4</span>
+        <h3>Uso</h3>
+        <p>El cliente puede reutilizarlo varias veces.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="comprar" class="section">
+    <h2>Comprar producto</h2>
+    <p>Elige la presentación que prefieras.</p>
+
+    <div class="shop">
+      <div class="product-option selected" data-name="Individual" data-price="50">
+        <h3>Individual</h3>
+        <p>1 pieza</p>
+        <strong>$50</strong>
+      </div>
+
+      <div class="product-option" data-name="Pack Familiar" data-price="130">
+        <h3>Pack Familiar</h3>
+        <p>3 piezas</p>
+        <strong>$130</strong>
+      </div>
+
+      <div class="product-option" data-name="Pack Ahorro" data-price="240">
+        <h3>Pack Ahorro</h3>
+        <p>6 piezas</p>
+        <strong>$240</strong>
+      </div>
+    </div>
+
+    <div class="cart-box">
+      <h3>Resumen de compra</h3>
+
+      <p>Producto: <span id="selectedProduct">Individual</span></p>
+      <p>Precio unitario: $<span id="unitPrice">50</span></p>
+
+      <div class="quantity">
+        <button id="minusBtn">-</button>
+        <span id="quantity">1</span>
+        <button id="plusBtn">+</button>
+      </div>
+
+      <h3>Total: $<span id="total">50</span></h3>
+
+      <input type="text" id="clientName" placeholder="Tu nombre">
+      <input type="tel" id="clientPhone" placeholder="Tu teléfono">
+
+      <button id="orderBtn" class="btn">Realizar pedido</button>
+      <p id="message"></p>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>¿Por qué comprarlo?</h2>
+
+    <div class="cards">
+      <div class="card">
+        <h3>Responsable</h3>
+        <p>Promueve un consumo más consciente.</p>
+      </div>
+
+      <div class="card">
+        <h3>Económico</h3>
+        <p>Los packs permiten ahorrar más.</p>
+      </div>
+
+      <div class="card">
+        <h3>Práctico</h3>
+        <p>Ideal para uso personal, familiar o regalo.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section faq">
+    <h2>Preguntas frecuentes</h2>
+
+    <details>
+      <summary>¿Cuánto tarda el envío?</summary>
+      <p>Depende de tu ubicación. Puedes confirmar por WhatsApp.</p>
+    </details>
+
+    <details>
+      <summary>¿Puedo comprar varias piezas?</summary>
+      <p>Sí, puedes elegir la cantidad antes de hacer el pedido.</p>
+    </details>
+
+    <details>
+      <summary>¿Cómo pago?</summary>
+      <p>Puedes pagar por transferencia, efectivo o el método que definas.</p>
+    </details>
+  </section>
+
+  <footer id="contacto">
+    <h2>Contacto</h2>
+    <p>WhatsApp: 000 000 0000</p>
+    <p>Instagram: @tu_producto</p>
+    <p>Correo: contacto@producto.com</p>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
