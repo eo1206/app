@@ -199,13 +199,53 @@
     </div>
   </section>
 
-  <section class="cta" id="precio">
-    <h2>Limpia más fácil. Limpia naturalmente.</h2>
-    <p>Presentación individual de EggClean.</p>
-    <h3 class="price">$45 MXN</h3>
-    <a href="#" class="btn cta-btn">Comprar EggClean</a>
+  <section class="buy-section" id="comprar">
+    <h2>Comprar EggClean</h2>
+    <p class="section-text">Elige la presentación que prefieras.</p>
+
+    <div class="shop">
+      <div class="product-option selected" data-name="Individual" data-price="50">
+        <h3>Individual</h3>
+        <p>1 pieza</p>
+        <strong>$45</strong>
+      </div>
+
+      <div class="product-option" data-name="Pack Familiar" data-price="130">
+        <h3>Pack Familiar</h3>
+        <p>3 piezas</p>
+        <strong>$120</strong>
+      </div>
+
+      <div class="product-option" data-name="Pack Ahorro" data-price="240">
+        <h3>Pack Ahorro</h3>
+        <p>6 piezas</p>
+        <strong>$220</strong>
+      </div>
+    </div>
+
+    <div class="cart-box">
+      <h3>Resumen de compra</h3>
+
+      <p>Producto: <span id="selectedProduct">Individual</span></p>
+      <p>Precio unitario: $<span id="unitPrice">45</span></p>
+
+      <div class="quantity">
+        <button id="minusBtn">-</button>
+        <span id="quantity">1</span>
+        <button id="plusBtn">+</button>
+      </div>
+
+      <h3>Total: $<span id="total">45</span></h3>
+
+      <input type="text" id="clientName" placeholder="Tu nombre">
+      <input type="tel" id="clientPhone" placeholder="Tu teléfono">
+
+      <button id="orderBtn" class="btn primary">Realizar pedido</button>
+      <p id="message"></p>
+    </div>
   </section>
 
+  <script type="module" src="app.js"></script>
   <footer>
     <p>EggClean © 2026 | Producto ecológico de limpieza</p>
   </footer>
